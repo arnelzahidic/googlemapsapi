@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  
+  <title>Sarajevo Map and markers</title>
+  <style>
+  
+    #map{
+      height:700px;
+      width:100%;
+    }
+	
+  </style>
+</head>
+<body>
+<div id="naslov">
+  <h1 style="text-align:center">Sarajevo map and markers</h1>
+  </div>
+  <div id="map"></div>
+  <script>
+  document.body.style.backgroundColor = "#FFF8DC";
+    function initMap(){
+      // opcije mape
+      var options = {
+        zoom:14,
+        center:{lat:43.859418,lng:18.425417}
+      }
+
+      // nova mapa
+      var map = new google.maps.Map(document.getElementById('map'), options);
+
+      //dodavanje markera proizoljno
+      google.maps.event.addListener(map, 'click', function(event){ 
+        addMarker({coords:event.latLng});
+      });
+
+     
+
+      // nizovi markera
+      var markers = [
+        {
+          coords:{lat:43.84864,lng:18.38133},
+          content:'<p>Hrasno</p>'
+        },
+        {
+          coords:{lat:43.84864,lng:18.40233},
+          content:'<p>Kovačići</p>'
+        },
+		{
+          coords:{lat:43.859721,lng:18.431241},
+		  iconImage:'sebilj.png',
+          content:'<h1>Sebilj</h1>'
+        },
+		{
+          coords:{lat:43.878263,lng:18.412179},
+		  iconImage:'lav.png',
+          content:'<h1>Pionirska dolina</h1>'
+        },
+		{
+          coords:{lat:43.859418,lng:18.425417},
+		  iconImage:'katedrala.png',
+          content:'<h1>Katedrala</h1>'
+        }
+       
+      ];
+
+      // for petlja i dodavanje markera
+      for(var i = 0;i < markers.length;i++){
+        addMarker(markers[i]);
+      }
+
+      // dodavanje markera funkcijom
+      function addMarker(props){
+        var marker = new google.maps.Marker({
+          position:props.coords,
+          map:map,
+        });
+
+	
+		
+        // provjeravanje i postavljanje slike if metodom
+        if(props.iconImage){
+          marker.setIcon(props.iconImage);
+        }
+
+        // kontent if
+        if(props.content){
+          var infoWindow = new google.maps.InfoWindow({
+            content:props.content
+          });
+
+          marker.addListener('click', function(){
+            infoWindow.open(map, marker);
+          });
+        }
+      }
+    }
+  </script>
+<script type="text/javascript"  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCc0n91wyGHJWI56R494RzCGkuLgQ2_Vi0&callback=initMap" async defer></script>
+
+</body>
+</html>
